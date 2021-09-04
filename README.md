@@ -1,6 +1,6 @@
 # Projeto  gerenciamento de pessoas
 
-	projeto desenvolvido no curso de spring boot da DIO.
+projeto desenvolvido no curso de spring boot da DIO.
 
 
 # O que foi usado ?
