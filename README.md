@@ -7,5 +7,6 @@
 
  - java jdk 11 
  - spring Boot
- -  Maven lombok 
+ -  Maven 
+ -  lombok 
  - banco de dados h2
