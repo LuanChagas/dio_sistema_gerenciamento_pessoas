@@ -21,9 +21,12 @@ import one.digitalinnovation.personaapi.entity.Phone;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class PersonDTO {
+    final static DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     private Long id;
+
     @NotEmpty
     @Size(min = 2, max = 100)
     private String firstName;
@@ -36,20 +39,18 @@ public class PersonDTO {
 
     private String birthDate;
 
-    private LocalDate birthDateReturn;
-
     @NotEmpty
     @Valid
     private List<Phone> phones;
 
-    public LocalDate getBirthDateReturn() {
-        this.birthDateReturn = data(this.birthDate);
-        return this.birthDateReturn;
+    public static LocalDate data(String dt) {
+
+        LocalDate data = LocalDate.parse(dt, DATEFORMATTER);
+        return data;
     }
 
-    public LocalDate data(String dt) {
-        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        LocalDate data = LocalDate.parse(dt, DATEFORMATTER);
+    public static String get2BirthDate(LocalDate localdate) {
+        String data = localdate.format(DATEFORMATTER);
         return data;
     }
 }

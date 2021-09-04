@@ -1,6 +1,9 @@
 package one.digitalinnovation.personaapi.service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,14 +11,15 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import one.digitalinnovation.personaapi.dto.MessageResponseDTO;
 import one.digitalinnovation.personaapi.dto.request.PersonDTO;
+import one.digitalinnovation.personaapi.dto.servicesDTO.ConvertPersons;
 import one.digitalinnovation.personaapi.entity.Person;
-import one.digitalinnovation.personaapi.mapper.PersonMapper;
 import one.digitalinnovation.personaapi.repository.PersonRepository;
 
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class PersonService {
 
+    @Autowired
     private PersonRepository personRepository;
 
     // private final PersonMapper personMapper = PersonMapper.INSTANCE;
@@ -29,12 +33,18 @@ public class PersonService {
      */
 
     public MessageResponseDTO createPerson(PersonDTO personDTO) {
-        LocalDate dt = personDTO.data(personDTO.getBirthDate());
-        Person personToSave = Person.builder().firstName(personDTO.getFirstName()).lastName(personDTO.getLastName())
-                .cpf(personDTO.getCpf()).birthDate(personDTO.getBirthDateReturn()).phones(personDTO.getPhones())
-                .build();
+        Person personToSave = ConvertPersons.PersonDTOToPerson(personDTO);
         Person savedPerson = personRepository.save(personToSave);
         return MessageResponseDTO.builder().message("Created person with ID " + savedPerson.getId()).build();
+    }
+
+    public List<PersonDTO> listAll() {
+        ConvertPersons convertPersons;
+        List<Person> allPeople = personRepository.findAll();
+        return allPeople.stream().map(x -> {
+            PersonDTO personDTO = ConvertPersons.PersonToPersonDTO(x);
+            return personDTO;
+        }).collect(Collectors.toList());
     }
 
 }
