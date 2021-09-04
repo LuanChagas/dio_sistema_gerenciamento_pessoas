@@ -1,9 +1,5 @@
 package one.digitalinnovation.personaapi.dto.servicesDTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import one.digitalinnovation.personaapi.dto.request.PersonDTO;
 import one.digitalinnovation.personaapi.entity.Person;
 

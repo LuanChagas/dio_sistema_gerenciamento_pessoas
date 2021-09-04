@@ -1,8 +1,6 @@
 package one.digitalinnovation.personaapi.service;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import one.digitalinnovation.personaapi.dto.MessageResponseDTO;
 import one.digitalinnovation.personaapi.dto.request.PersonDTO;
 import one.digitalinnovation.personaapi.dto.servicesDTO.ConvertPersons;
 import one.digitalinnovation.personaapi.entity.Person;
+import one.digitalinnovation.personaapi.exceptions.PersonNotFoundException;
 import one.digitalinnovation.personaapi.repository.PersonRepository;
 
 @Service
@@ -39,12 +38,17 @@ public class PersonService {
     }
 
     public List<PersonDTO> listAll() {
-        ConvertPersons convertPersons;
         List<Person> allPeople = personRepository.findAll();
         return allPeople.stream().map(x -> {
             PersonDTO personDTO = ConvertPersons.PersonToPersonDTO(x);
             return personDTO;
         }).collect(Collectors.toList());
+    }
+
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+
+        return ConvertPersons.PersonToPersonDTO(person);
     }
 
 }
